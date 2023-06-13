@@ -29,7 +29,7 @@ public class Player_test : MonoBehaviour
         pos = transform.position;//シーン呼び出し時現在位置取得
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         //移動
         if (Is_player_canmove == true)
