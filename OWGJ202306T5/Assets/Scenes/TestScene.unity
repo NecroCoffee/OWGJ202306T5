@@ -161,6 +161,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5134692214400608472, guid: 4f36cb702b8cc3843a70270d5be0f1b4, type: 3}
+      propertyPath: player_speed
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 5134692214400608474, guid: 4f36cb702b8cc3843a70270d5be0f1b4, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -171,7 +175,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5134692214400608474, guid: 4f36cb702b8cc3843a70270d5be0f1b4, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -3.12
       objectReference: {fileID: 0}
     - target: {fileID: 5134692214400608474, guid: 4f36cb702b8cc3843a70270d5be0f1b4, type: 3}
       propertyPath: m_LocalPosition.z
@@ -224,7 +228,7 @@ GameObject:
   - component: {fileID: 1078988349}
   - component: {fileID: 1078988348}
   m_Layer: 0
-  m_Name: Square
+  m_Name: Save_test
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
