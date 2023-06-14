@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 /// <summary>
@@ -9,36 +10,33 @@ using UnityEngine;
 public class PlayerMove : MonoBehaviour
 {
     // 移動
-    [SerializeField] GameObject player;          // プレイヤーのオブジェクト
-    [SerializeField] Vector3 playerPos;          // プレイヤーの位置
-    [SerializeField] float amoMove = 1.0f;      // 移動量
+    [SerializeField] GameObject player;        // プレイヤーのオブジェクト
+    private Vector3 playerPos;                 // プレイヤーの位置
+    [SerializeField] float amoMove = 1.0f;     // 移動量
+    [SerializeField] float gravity = 9.8f;     // 重力
     private float xPos;
 
     // ジャンプ
-    private Rigidbody2D playerCollider;          // プレイヤーの当たり判定
-    private float jumpForce = 300f;              // ジャンプ力
-    private bool jump = false;                   // ジャンプ中かどうか
+    private Rigidbody2D playerRb;          // プレイヤーの当たり判定
+    private float jumpForce = 350f;        // ジャンプ力
+    private bool jump = false;             // ジャンプ中かどうか
 
-    // 投げる関連
-    private float throwPower = 0.0f;    // 投げる強さ
-    [SerializeField] LineRenderer lineRenderer;
-    private int playerPosRenderer = 0;
-    private int targetPosRenderer = 1;
-    private Vector3 targetPos;
+    // 投げる
+    [SerializeField] GameObject savePoint;  // セーブポイントのプレハブ
+    [SerializeField] Vector3 startPosition;    // 投げ始める位置
+    private float throwPower = 1.0f;        // 投げる強さ
+    Vector3 initialVelocity;                // 初速度
+    private float throwAngle = 0.0f;        // 投げる角度
+    private float speed = 1.0f;             // 動く速さ
 
-    // test
-    [SerializeField] GameObject test;
-    private Vector3 rote;
-
-    // Start is called before the first frame update
     void Start()
     {
         // プレイヤーの位置を取得
         // SerializeFieldにしてインスペクターから指定してもいいが、色々いじってる間に参照が外れる可能性がある
-        playerPos = player.GetComponent<Transform>().position;  
+        playerPos = player.transform.position;  
 
         // プレイヤーのコライダーを取得
-        playerCollider = player.GetComponent<Rigidbody2D>();
+        playerRb = player.GetComponent<Rigidbody2D>();
 
     }
 
@@ -53,47 +51,40 @@ public class PlayerMove : MonoBehaviour
         if (!jump && Input.GetKeyDown(KeyCode.Space))
         {
             jump = true;
-            playerCollider.AddForce(transform.up * jumpForce);
+            playerRb.AddForce(transform.up * jumpForce);
+        }
+        if (jump) playerRb.AddForce(new Vector3(0, gravity, 0), (ForceMode2D)ForceMode.Force);
+
+        // 投げる
+        if (Input.GetMouseButton(0)) 
+        {
+            // 角度から初速度を決定
+            Vector3 from = playerPos;
+            Vector3 to = Input.mousePosition;
+            Vector3 planeNormal = Vector3.up;   // 上向き
+            Vector3 planeFrom = Vector3.ProjectOnPlane(from, planeNormal);
+            Vector3 planeTo = Vector3.ProjectOnPlane(to, planeNormal);
+            throwAngle = Vector3.SignedAngle(planeFrom, planeTo, planeNormal);
+            float vx = throwPower * Mathf.Cos(throwAngle * Mathf.Deg2Rad);
+            float vy = throwPower * Mathf.Sin(throwAngle * Mathf.Deg2Rad);
+            initialVelocity = new Vector3(vx, vy, 0);
         }
 
-        // 角度を決める
-        if (Input.GetMouseButton(0)) {
-            throwPower += Time.deltaTime;
-            Debug.Log(throwPower);
+        if (Input.GetMouseButtonUp(0))
+        {
+            GameObject obj = Instantiate(savePoint, startPosition, Quaternion.identity);
+            Rigidbody2D rd = obj.GetComponent<Rigidbody2D>();
+            rd.AddForce(initialVelocity, (ForceMode2D)ForceMode.Impulse);
         }
-
-        // セーブポイントを投げる
-        if (Input.GetMouseButtonUp(0)) SaveThrow();
-
     }
 
     /// <summary>
-    /// 床についてるときのみジャンプ可
+    /// 床についてるときのみジャンプ可にする
     /// </summary>
     /// <param name="collision"></param>
     private void OnTriggerEnter2D(Collider2D collision)
     {
         jump = false;
-    }
-
-    /// <summary>
-    /// セーブポイントを投げる処理
-    /// </summary>
-    void SaveThrow()
-    {
-        // test
-        playerPos = new Vector3(0, 0, 0);
-        targetPos = new Vector3(2, 0, 0);
-        rote = new Vector3(0, 0, throwPower);
-
-        // 照準表示
-        lineRenderer.SetPosition(playerPosRenderer, playerPos);
-        lineRenderer.SetPosition(targetPosRenderer, targetPos);
-
-        // 投げる方向を決める
-        //targetPos = new Vector3(playerPos.x + 2, playerPos.y + throwPower, 0);
-
-        throwPower = 0;  // 初期化
     }
 
 }
