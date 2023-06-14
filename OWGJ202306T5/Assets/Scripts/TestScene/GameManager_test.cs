@@ -14,23 +14,23 @@ public class GameManager_test : MonoBehaviour
 
     [Header("管理用変数")]
     public int player_Life = 15;//プレイヤー残機
-    private Vector2 save_tmp;//セーブオブジェクト位置保存用
+    [SerializeField]private Vector2 save_tmp;//セーブオブジェクト座標保存用
     public bool Is_saveObjectActive=true;//セーブオブジェクトは有効かどうか
     private Vector2 startPointPos;//スタート時プレイヤー生成位置
-    //[SerializeField] bool Is_canPlayerGenerate;//プレイヤー生成可否判定
-    private Vector2 currentCheckPointPos;
+    
+    public Vector2 currentCheckPointPos;//チェックポイント座標保存用
 
     private void Player_Generate_Start()//開始時プレイヤー生成
     {
         Instantiate(player_Prefab, startPointPos, Quaternion.identity);
-        //Is_canPlayerGenerate = false;
+        
     }
 
     private void Player_Action_Reset()//リセット処理
     {
-          
-            Instantiate(player_Prefab, save_tmp, Quaternion.identity);
-            Destroy(save_Prefab);
+
+        GameObject.FindWithTag("Player").transform.position = new Vector3(save_tmp.x, save_tmp.y+0.25f);
+        Destroy(save_Prefab);
         
     }
 
@@ -40,18 +40,15 @@ public class GameManager_test : MonoBehaviour
         {
             save_Prefab = GameObject.FindWithTag("SaveObject");
         }
-        else if(save_Prefab!=null)
+        else if (save_Prefab != null)
         {
             save_tmp = GameObject.FindWithTag("SaveObject").transform.position;//セーブオブジェクトの位置を取得；
         }
-        else if (save_tmp==null&&currentCheckPointPos!=null)
+        else if (save_Prefab == null && currentCheckPointPos != null)
         {
-            save_tmp = GameObject.FindWithTag("CheckPoint").transform.position;//直前のセーブポイントを取得
+            save_tmp = GameObject.FindWithTag("StartPoint").transform.position;
         }
-        else
-        {
-            save_tmp = GameObject.FindWithTag("StartPoint").transform.position;//セーブポイントがnull andチェックポイントがnull時はスタート地点の値を入れる。
-        }
+        
     }
 
     private void Awake()
@@ -67,10 +64,14 @@ public class GameManager_test : MonoBehaviour
     }
     
 
+
+
     private void Update()
     {
 
         Find_Pos_CurrentSaveObject();
+        Debug.Log("curSavePos.x" + save_tmp.x);
+        Debug.Log("curSavePos.y" + save_tmp.y);
         
         
         if (Input.GetMouseButtonDown(1))
