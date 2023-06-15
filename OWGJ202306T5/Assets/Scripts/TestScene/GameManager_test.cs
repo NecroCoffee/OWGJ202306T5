@@ -15,10 +15,12 @@ public class GameManager_test : MonoBehaviour
     [Header("管理用変数")]
     public int player_Life = 15;//プレイヤー残機
     [SerializeField]private Vector2 save_tmp;//セーブオブジェクト座標保存用
-    public bool Is_saveObjectActive=true;//セーブオブジェクトは有効かどうか
+    public bool Is_saveObjectActive=false;//セーブオブジェクトは有効かどうか
     private Vector2 startPointPos;//スタート時プレイヤー生成位置
     
     public Vector2 currentCheckPointPos;//チェックポイント座標保存用
+
+    public bool Is_canSaveObjectGenerate;//セーブオブジェクト生成判定
 
     private void Player_Generate_Start()//開始時プレイヤー生成
     {
@@ -44,11 +46,6 @@ public class GameManager_test : MonoBehaviour
         {
             save_tmp = GameObject.FindWithTag("SaveObject").transform.position;//セーブオブジェクトの位置を取得；
         }
-        else if (save_Prefab == null && currentCheckPointPos != null)
-        {
-            save_tmp = GameObject.FindWithTag("StartPoint").transform.position;
-        }
-        
     }
 
     private void Awake()
@@ -70,8 +67,8 @@ public class GameManager_test : MonoBehaviour
     {
 
         Find_Pos_CurrentSaveObject();
-        Debug.Log("curSavePos.x" + save_tmp.x);
-        Debug.Log("curSavePos.y" + save_tmp.y);
+        //Debug.Log("curSavePos.x" + save_tmp.x);
+        //Debug.Log("curSavePos.y" + save_tmp.y);
         
         
         if (Input.GetMouseButtonDown(1))
