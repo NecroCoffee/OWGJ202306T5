@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+
 public class ThrowArc : MonoBehaviour
 {
     [SerializeField] PlayerMove playerMove; // 初速度や生成座標を持つコンポーネント
@@ -20,14 +22,17 @@ public class ThrowArc : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        /*
        // LineRendererを用意
        CreateLineRengererObjects();
-       
+       */
     }
 
     // Update is called once per frame
     void Update()
     {
+
+        /*
         // 初速度を更新
         if (Input.GetMouseButton(0)) throwPower += throwPower * Time.deltaTime;
 
@@ -63,9 +68,10 @@ public class ThrowArc : MonoBehaviour
                 lineRenderers[i].enabled = false;
             }
         }
-
+        */
     }
 
+    /*
     /// <summary>
     /// 指定時間に対するアーチの放物線上の座標を返す
     /// </summary>
@@ -132,5 +138,5 @@ public class ThrowArc : MonoBehaviour
         }
         return float.MaxValue;
     }
-
+    */
 }
