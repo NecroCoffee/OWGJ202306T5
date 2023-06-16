@@ -21,6 +21,7 @@ public class CheckPointUpdate_test : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             m_gameManagerScript.currentCheckPointPos = m_thisObjectPos;
+            m_gameManagerScript.Is_saveObjectActive = true;
             Debug.Log("CheckPointActive!{Pos.x="+m_thisObjectPos.x+":Pos.y="+m_thisObjectPos.y+"}");
         }
     }

@@ -14,13 +14,27 @@ public class GameManager_test : MonoBehaviour
 
     [Header("管理用変数")]
     public int player_Life = 15;//プレイヤー残機
+
     [SerializeField]private Vector2 save_tmp;//セーブオブジェクト座標保存用
+
     public bool Is_saveObjectActive=false;//セーブオブジェクトは有効かどうか
+
     private Vector2 startPointPos;//スタート時プレイヤー生成位置
+
+
+
+
+
+
+
+
+
+
+
     
     public Vector2 currentCheckPointPos;//チェックポイント座標保存用
 
-    public bool Is_canSaveObjectGenerate;//セーブオブジェクト生成判定
+    public bool Is_canSaveObjectGenerate;//セーブオブジェクト生成可否判定
 
     private void Player_Generate_Start()//開始時プレイヤー生成
     {
@@ -32,6 +46,7 @@ public class GameManager_test : MonoBehaviour
     {
 
         GameObject.FindWithTag("Player").transform.position = new Vector3(save_tmp.x, save_tmp.y+0.25f);
+        Is_canSaveObjectGenerate = true;
         Destroy(save_Prefab);
         
     }
@@ -45,6 +60,23 @@ public class GameManager_test : MonoBehaviour
         else if (save_Prefab != null)
         {
             save_tmp = GameObject.FindWithTag("SaveObject").transform.position;//セーブオブジェクトの位置を取得；
+        }
+    }
+
+    private void Return_To_Point()//Pointタグオブジェクトに戻る
+    {
+        if (Input.GetKeyDown("r"))
+        {
+            if (Is_saveObjectActive == true)
+            {
+                GameObject.FindWithTag("Player").transform.position = new Vector2(currentCheckPointPos.x, currentCheckPointPos.y);
+                Debug.Log("Return to checkpoint!");
+            }
+            else if(Is_saveObjectActive == false)
+            {
+                GameObject.FindWithTag("Player").transform.position = new Vector2(startPointPos.x,startPointPos.y);
+                Debug.Log("CheckPoint isnt active. Return to startpoint!");
+            }
         }
     }
 

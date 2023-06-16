@@ -5,8 +5,8 @@ using UnityEngine;
 public class Player_test : MonoBehaviour
 {
     //GameObject player_Prefab;
-    [Header("ここにGameManagerオブジェクトを入れる")]
-    public GameObject gameManagerObject;//GameManager保存用
+    //[Header("ここにGameManagerオブジェクトを入れる")]
+    //public GameObject gameManagerObject;//GameManager保存用
 
     private Vector2 pos;
     private float horizontal;
