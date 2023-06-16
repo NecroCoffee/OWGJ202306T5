@@ -5,21 +5,21 @@ using UnityEngine;
 public class Player_test : MonoBehaviour
 {
     //GameObject player_Prefab;
+    //[Header("ここにGameManagerオブジェクトを入れる")]
+    //public GameObject gameManagerObject;//GameManager保存用
 
     private Vector2 pos;
     private float horizontal;
 
     public bool Is_player_canmove = true;//プレイヤーは移動可能かどうか
 
-    public float player_speed = 1.0f;//プレイヤースピード
+    [SerializeField]public float player_Speed = 1.0f;//プレイヤースピード
 
     public void Player_Move()
     {
         horizontal = Input.GetAxisRaw("Horizontal");
 
-        transform.Translate(new Vector2(horizontal, 0)*player_speed * Time.deltaTime);
-
-        
+        transform.Translate(new Vector2(horizontal, 0)*player_Speed * Time.deltaTime);
 
 
     }

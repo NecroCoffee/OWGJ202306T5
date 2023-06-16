@@ -5,6 +5,12 @@ TagManager:
   serializedVersion: 2
   tags:
   - SaveObject
+  - Stage
+  - StartPoint
+  - Player1
+  - Player2
+  - CheckPoint
+  - GameManager
   layers:
   - Default
   - TransparentFX
@@ -15,7 +21,7 @@ TagManager:
   - 
   - Player
   - SaveObject
-  - 
+  - PointObject
   - 
   - 
   - 
