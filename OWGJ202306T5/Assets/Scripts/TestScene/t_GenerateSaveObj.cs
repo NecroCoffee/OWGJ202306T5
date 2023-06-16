@@ -17,9 +17,10 @@ public class t_GenerateSaveObj : MonoBehaviour
     }
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0)&&m_gameManagerScript.Is_canSaveObjectGenerate==true)
+        if (Input.GetMouseButtonDown(0) && m_gameManagerScript.Is_canSaveObjectGenerate == true) 
         {
             mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            m_gameManagerScript.Is_saveObjectActive = true;
             m_gameManagerScript.Is_canSaveObjectGenerate = false;
             Instantiate(saveObject, new Vector2(mousePos.x, mousePos.y), Quaternion.identity);
             

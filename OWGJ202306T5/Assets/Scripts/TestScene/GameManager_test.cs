@@ -17,7 +17,7 @@ public class GameManager_test : MonoBehaviour
 
     [SerializeField]private Vector2 save_tmp;//セーブオブジェクト座標保存用
 
-    public bool Is_saveObjectActive=false;//セーブオブジェクトは有効かどうか
+    public bool Is_saveObjectActive = false;//セーブジェクトは有効かどうか
 
     private Vector2 startPointPos;//スタート時プレイヤー生成位置
 
@@ -44,11 +44,13 @@ public class GameManager_test : MonoBehaviour
 
     private void Player_Action_Reset()//リセット処理
     {
-
-        GameObject.FindWithTag("Player").transform.position = new Vector3(save_tmp.x, save_tmp.y+0.25f);
-        Is_canSaveObjectGenerate = true;
-        Destroy(save_Prefab);
-        
+        if (Is_saveObjectActive == true) 
+        {
+            GameObject.FindWithTag("Player").transform.position = new Vector3(save_tmp.x, save_tmp.y + 0.25f);
+            Is_canSaveObjectGenerate = true;
+            Is_saveObjectActive = false;
+            Destroy(save_Prefab);
+        }
     }
 
     private void Find_Pos_CurrentSaveObject()
@@ -82,7 +84,12 @@ public class GameManager_test : MonoBehaviour
 
     private void Awake()
     {
+        
+        Is_canSaveObjectGenerate = true;
         startPointPos = GameObject.FindWithTag("StartPoint").transform.position;//スタート位置取得
+
+        save_tmp = startPointPos;//初期地点ロード
+
         life_Text = life_TextObject.GetComponent<TextMeshProUGUI>();
         life_Text.text = player_Life.ToString();
     }

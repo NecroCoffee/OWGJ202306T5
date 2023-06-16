@@ -133,6 +133,7 @@ GameObject:
   m_Component:
   - component: {fileID: 120653648}
   - component: {fileID: 120653649}
+  - component: {fileID: 120653650}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: GameManager
@@ -174,6 +175,21 @@ MonoBehaviour:
   save_tmp: {x: 0, y: 0}
   Is_saveObjectActive: 1
   currentCheckPointPos: {x: 0, y: 0}
+  Is_canSaveObjectGenerate: 0
+--- !u!114 &120653650
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 120653647}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 846fd44b508ac9048b10871f6e1c17d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  saveObject: {fileID: 3480692179420655087, guid: 758961a3ad7b28f42a16b9badbf4e4c5, type: 3}
+  m_gameManagerObject: {fileID: 0}
 --- !u!1 &237707917
 GameObject:
   m_ObjectHideFlags: 0
