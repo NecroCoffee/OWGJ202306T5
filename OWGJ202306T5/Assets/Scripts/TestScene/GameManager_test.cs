@@ -23,18 +23,14 @@ public class GameManager_test : MonoBehaviour
 
 
 
+    [SerializeField] private float m_resetPlayerPos_y = 0.25f;//リセット時埋まり込み防止用
 
+    public bool Is_checkPointIsActive;//チェックポイントは有効かどうか
 
-
-
-
-
-
-
-    
     public Vector2 currentCheckPointPos;//チェックポイント座標保存用
 
     public bool Is_canSaveObjectGenerate;//セーブオブジェクト生成可否判定
+
 
     private void Player_Generate_Start()//開始時プレイヤー生成
     {
@@ -44,16 +40,24 @@ public class GameManager_test : MonoBehaviour
 
     private void Player_Action_Reset()//リセット処理
     {
-        if (Is_saveObjectActive == true) 
+        if (Is_saveObjectActive == true)
         {
-            GameObject.FindWithTag("Player").transform.position = new Vector3(save_tmp.x, save_tmp.y + 0.25f);
+            GameObject.FindWithTag("Player").transform.position = new Vector3(save_tmp.x, save_tmp.y + m_resetPlayerPos_y);
             Is_canSaveObjectGenerate = true;
             Is_saveObjectActive = false;
             Destroy(save_Prefab);
         }
+        else if (Is_saveObjectActive == false & Is_checkPointIsActive == true)
+        {
+            GameObject.FindWithTag("Player").transform.position = new Vector3(currentCheckPointPos.x, currentCheckPointPos.y + m_resetPlayerPos_y);
+        }
+        else if (Is_saveObjectActive == false & Is_checkPointIsActive == false)
+        {
+            GameObject.FindWithTag("Player").transform.position = new Vector3(startPointPos.x, startPointPos.y + m_resetPlayerPos_y);
+        }
     }
 
-    private void Find_Pos_CurrentSaveObject()
+    private void Find_Pos_CurrentSaveObject()//セーブオブジェクト探索
     {
         if (save_Prefab == null)
         {

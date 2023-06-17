@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5134692214400608473}
   - component: {fileID: 5134692214400608472}
   - component: {fileID: 2098948368710033345}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Test_Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -147,7 +147,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9d35e78058c83e45abc7d7446a73e11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameManagerObject: {fileID: 0}
   Is_player_canmove: 1
   player_Speed: 5
 --- !u!114 &2098948368710033345
@@ -163,3 +162,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   saveObject: {fileID: 3480692179420655087, guid: 758961a3ad7b28f42a16b9badbf4e4c5, type: 3}
+  m_gameManagerObject: {fileID: 0}
