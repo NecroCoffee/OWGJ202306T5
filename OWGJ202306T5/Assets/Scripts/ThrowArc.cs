@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class ThrowArc : MonoBehaviour
 {
+    /*
     [SerializeField] PlayerMove playerMove; // 初速度や生成座標を持つコンポーネント
 
     private bool drawArc = true;            // 放物線を描画しているか
@@ -17,6 +18,9 @@ public class ThrowArc : MonoBehaviour
 
     private Vector3 initialVelocity;    // 初速度
     private float throwPower = 1.0f;    // 投げる強さ
+    */
+
+
 
 
     // Start is called before the first frame update
@@ -26,11 +30,14 @@ public class ThrowArc : MonoBehaviour
        // LineRendererを用意
        CreateLineRengererObjects();
        */
+
+
     }
 
     // Update is called once per frame
     void Update()
     {
+
 
         /*
         // 初速度を更新
@@ -139,4 +146,5 @@ public class ThrowArc : MonoBehaviour
         return float.MaxValue;
     }
     */
+
 }

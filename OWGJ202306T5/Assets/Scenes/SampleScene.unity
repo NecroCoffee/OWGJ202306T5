@@ -591,7 +591,6 @@ MonoBehaviour:
   amoMove: 1
   gravity: 9.8
   savePoint: {fileID: 1981012383380686825, guid: 9bae47b763fa5b84a98e8e4138cd2809, type: 3}
-  initialVelocity: {x: 0, y: 0, z: 0}
 --- !u!1 &2142225701
 GameObject:
   m_ObjectHideFlags: 0
@@ -606,7 +605,7 @@ GameObject:
   - component: {fileID: 2142225702}
   m_Layer: 0
   m_Name: TestFloor
-  m_TagString: Untagged
+  m_TagString: Finish
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

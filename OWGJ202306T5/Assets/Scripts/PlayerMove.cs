@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 /// <summary>
-/// プレイヤーの操作(プレイヤーにアタッチする)
+/// プレイヤーの操作(プレイヤーにアタッチ)
 /// 聖山由梨
 /// </summary>
 public class PlayerMove : MonoBehaviour
@@ -14,7 +14,7 @@ public class PlayerMove : MonoBehaviour
     [SerializeField] GameObject player;        // プレイヤーのオブジェクト
     private Vector3 playerPos;                 // プレイヤーの位置
     [SerializeField] float amoMove = 1.0f;     // 移動量
-    [SerializeField] float gravity = 9.8f;     // 重力
+    [SerializeField] float gravity = -9.81f;     // 重力
     private float xPos;
 
     // ジャンプ
@@ -36,16 +36,17 @@ public class PlayerMove : MonoBehaviour
     private float throwAngle = 0.0f;    // 投げる角度
     // 発射
     private bool throwing = false; // 投げているか
-    private float Travel;               // 水平移動量
-    private float speed = 1.0f;         // 投げたセーブポイントが動く速さ
-    private float throwPower = 1.0f;    // 投げる強さ
-    [SerializeField] Vector3 initialVelocity;            // セーブポイントに加わる力
+    float throwPower = 1.0f;    // 投げる強さ
+    Vector3 angle; // 投げる方向
+    float high;    // 最高点の高さ
+
+    //test
 
 
     void Start()
     {
         // プレイヤーの位置を取得
-        playerPos = player.transform.position;  
+        playerPos = player.transform.position;
 
         // プレイヤーのRigidBodyを取得
         playerRb = player.GetComponent<Rigidbody2D>();
@@ -59,7 +60,7 @@ public class PlayerMove : MonoBehaviour
     {
         // 左右移動
         xPos = Input.GetAxisRaw("Horizontal");
-        transform.Translate(new Vector3 (xPos, 0) * amoMove * Time.deltaTime);
+        transform.Translate(new Vector3(xPos, 0) * amoMove * Time.deltaTime);
 
         // ジャンプ
         if (!jump && Input.GetKeyDown(KeyCode.Space))
@@ -74,26 +75,18 @@ public class PlayerMove : MonoBehaviour
 
         // 投げる
         if (Input.GetMouseButtonDown(0)) ThrowPoint();
-        if (Input.GetMouseButton(0) ) throwPower += Time.deltaTime + 1.5f;
+        if (Input.GetMouseButton(0)) throwPower += Time.deltaTime + 1.0f;
         if (Input.GetMouseButtonUp(0)) SaveThrow();
-        //if (nowThrow) Throwing();
+        //if (throwing) Throwing();
 
     }
 
-    /*private void FixedUpdate()
+    
+    private void FixedUpdate()
     {
-        if (throwing)
-        {
-            Vector3 gravity = new Vector3(0f, -this.gravity, 0f);
-            savePointRd.AddForce(initialVelocity, (ForceMode2D)ForceMode.VelocityChange);
-
-            if (savePointObj.transform.position.x <= initialVelocity.x / 2)
-            {
-                savePointRd.AddForce(gravity, (ForceMode2D)ForceMode.Acceleration);
-            }
-        }
-        
-    }*/
+        if (throwing && savePointRd.transform.position.y >= high) GravityUp();
+    }
+    
 
     /// <summary>
     /// 床についてるときのみジャンプ可にする
@@ -105,91 +98,62 @@ public class PlayerMove : MonoBehaviour
     }
 
     /// <summary>
-    /// 投げる角度の計算
+    /// 投げる方向の決定
     /// </summary>
     private void ThrowPoint()
     {
+        // 投げる強さをリセット
+        throwPower = 0;
+
         // プレイヤーの位置を固定
         playerRb = player.GetComponent<Rigidbody2D>();
         playerRb.constraints = RigidbodyConstraints2D.FreezeAll;
 
         // クリックした座標を取得
         worldTarget = Camera.main.ScreenToWorldPoint(mousePosition);
+        worldTarget.z = 0;
 
         // 指定子オブジェクトと同じ位置にセーブポイントを生成
         startPosition = GameObject.FindWithTag(saveTag).transform.position;
         savePointObj = Instantiate(savePoint, startPosition, Quaternion.identity);
         savePointRd = savePointObj.GetComponent<Rigidbody2D>();
 
-        // 角度を計算
-        float dx = worldTarget.x - playerPos.x;
-        float dy = worldTarget.y - playerPos.y;
-        float rad = Mathf.Atan2(dy, dx);
-        throwAngle = rad * Mathf.Rad2Deg;  // ラジアンを度に直す
+        // 投げる方向を決定
+        angle = (worldTarget - playerPos).normalized;
 
-        Debug.Log(throwAngle);
+        Debug.Log(angle);
 
-        Travel = 0.0f;
         nowThrow = true;
-    }
+    }//ThrowPoint()
+
 
     /// <summary>
-    /// 投げる強さの計算
+    /// 投げる強さを決定
     /// </summary>
     private void SaveThrow()
     {
-        float vx = throwPower * Mathf.Cos(throwAngle);
-        float vy = throwPower * Mathf.Sin(throwAngle);
-        initialVelocity = new Vector3(vx, vy, 0f);
-
         savePointRd.bodyType = RigidbodyType2D.Dynamic;
-        savePointRd.AddForce(initialVelocity);
+
+        // 投げる
+        savePointRd.AddForce(angle * throwPower);
+
+        // 最高到達点に達するまでの時間
+        float t = angle.y / gravity;
+
+        // 最高点の高さ
+        high = angle.y * t - 0.5f * gravity * Mathf.Pow(t, 2);
+
         nowThrow = false;
         throwing = true;
         playerRb.constraints = RigidbodyConstraints2D.None;
     }
 
-    /*
-    private void Throwing()
+    /// <summary>
+    /// 軌道の調整
+    /// </summary>
+    private void GravityUp()
     {
-        savePointRd.bodyType = RigidbodyType2D.Dynamic;
-
-        // 水平移動量を求める
-        Travel += speed * Time.deltaTime;
-
-        // 目的地点までの距離を求める
-        worldTarget.y = playerPos.y;  // 高さを合わせる
-        float distance = Vector3.Distance(startPosition, worldTarget);
-        
-        // 進行割合を求める
-        var t = Travel * distance;
-
-        if (t < 1.0f) 
-        {
-            //tが0.5（つまり中間地点）からどれだけ離れているかを求める
-            //中間地点で0.0、出発地や目的地で1.0となるような値にする
-            var d = Mathf.Abs(t - 0.5f) * 2.0f;
-
-            //現在の水平位置を決め...
-            var p = Vector3.Lerp(playerPos, worldTarget, t);
-
-            //高さを二次関数の曲線に沿って調整し...
-            p.y += Mathf.Tan(Mathf.Deg2Rad * throwAngle) * 0.25f * distance * (1.0f - (d * d));
-
-            //位置を設定する
-            savePointObj.transform.position = p;
-
-            return;
-        }
-
-        if (t >= 1.0f)
-        {
-            //tが1.0に到達したら移動終了とする
-            savePointObj.transform.position = worldTarget;
-            nowThrow = false;
-            playerRb.constraints = RigidbodyConstraints2D.None;
-        }
-        
+        savePointRd.AddForce(new Vector2(1.0f, -4.0f), (ForceMode2D)ForceMode.Acceleration);
     }
-    */
 }
+    
