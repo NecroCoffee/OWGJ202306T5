@@ -14,7 +14,7 @@ public class PlayerMove : MonoBehaviour
     [SerializeField] GameObject player;        // プレイヤーのオブジェクト
     private Vector3 playerPos;                 // プレイヤーの位置
     [SerializeField] float amoMove = 1.0f;     // 移動量
-    [SerializeField] float gravity = -9.81f;     // 重力
+    public float gravity { get; private set; } = -9.81f;     // 重力
     private float xPos;
 
     // ジャンプ
@@ -23,22 +23,23 @@ public class PlayerMove : MonoBehaviour
     private bool jump = false;             // ジャンプ中かどうか
 
     // 投げる
+    [SerializeField] ThrowArc throwArc;
     // セーブポイント
     [SerializeField] GameObject savePoint;          // セーブポイントのプレハブ
     private const string saveTag = "SaveObject";    // セーブポイントのタグ
     private GameObject savePointObj;                // 生成したセーブポイント
-    private Rigidbody2D savePointRd;                // 生成したセーブポイントのRigidBody
+    public Rigidbody2D savePointRd { get; private set; }                // 生成したセーブポイントのRigidBody
     // 角度
-    private bool nowThrow = false;      // 投げようとしているか
+    public bool nowThrow { get; private set; } = false;      // 投げようとしているか
     Vector3 startPosition;              // 投げ始める位置
     private Vector3 mousePosition;      // マウスの座標
     private Vector3 worldTarget;        // マウスのワールド座標
-    private float throwAngle = 0.0f;    // 投げる角度
     // 発射
     private bool throwing = false; // 投げているか
-    float throwPower = 1.0f;    // 投げる強さ
-    Vector3 angle; // 投げる方向
-    float high;    // 最高点の高さ
+    public float throwPower { get; private set; } = 1.0f;    // 投げる強さ
+    public Vector3 angle { get; private set; } // 投げる方向
+    public float t { get; private set; }    // 最高点に達するまでの時間
+    public float high { get; private set; }    // 最高点の高さ
 
     //test
 
@@ -78,7 +79,6 @@ public class PlayerMove : MonoBehaviour
         if (Input.GetMouseButton(0)) throwPower += Time.deltaTime + 1.0f;
         if (Input.GetMouseButtonUp(0)) SaveThrow();
         //if (throwing) Throwing();
-
     }
 
     
@@ -121,8 +121,6 @@ public class PlayerMove : MonoBehaviour
         // 投げる方向を決定
         angle = (worldTarget - playerPos).normalized;
 
-        Debug.Log(angle);
-
         nowThrow = true;
     }//ThrowPoint()
 
@@ -138,7 +136,7 @@ public class PlayerMove : MonoBehaviour
         savePointRd.AddForce(angle * throwPower);
 
         // 最高到達点に達するまでの時間
-        float t = angle.y / gravity;
+        t = angle.y / gravity;
 
         // 最高点の高さ
         high = angle.y * t - 0.5f * gravity * Mathf.Pow(t, 2);
@@ -153,7 +151,8 @@ public class PlayerMove : MonoBehaviour
     /// </summary>
     private void GravityUp()
     {
-        savePointRd.AddForce(new Vector2(1.0f, -4.0f), (ForceMode2D)ForceMode.Acceleration);
+        savePointRd.AddForce(new Vector2(1.0f, -5.0f), (ForceMode2D)ForceMode.Acceleration);
+        throwing = false;
     }
 }
     
