@@ -10,8 +10,9 @@ using UnityEngine;
 public class ThrowArc : MonoBehaviour
 {
     [SerializeField] PlayerMove playerMove; // 初速度や生成座標を持つコンポーネント
+    float mass = 1.0f;                          // 空気抵抗
+    Vector3 gravity = new Vector2(0f, -9.8f);   // 重力
 
-    
     private bool drawArc = true;            // 放物線を描画しているか
     private int segmentCount = 60;          // 放物線を構成する線分の数
     private float predictionTime = 6.0f;    // 放物線を何秒分計算するか
@@ -21,6 +22,7 @@ public class ThrowArc : MonoBehaviour
     [SerializeField] Vector3 startPosition;
     Vector3 endPosition;
 
+    [SerializeField] LayerMask floor;
     LineRenderer lineRenderer;
     List<Vector3> renderLinePoints = new List<Vector3>();
 
@@ -44,14 +46,16 @@ public class ThrowArc : MonoBehaviour
         if (playerMove.nowThrow && drawArc)
         {
             startPosition = playerMove.savePointRd.position;
+
             for (int i = 0; i < segmentCount; i++)
             {
                 // 線の座標を更新
                 float startTime = timeStep * i;
                 float endTime = startTime + timeStep;
+
                 SetLineRendererPosition(i, startTime, endTime, !draw);
 
-                /*
+                
                 // 衝突判定
                 if (!draw)
                 {
@@ -60,7 +64,7 @@ public class ThrowArc : MonoBehaviour
                     {
                         draw = true; // 衝突したらその先の放物線は表示しない
                     }
-                }*/
+                }
             }//for
         }
         else
@@ -82,12 +86,14 @@ public class ThrowArc : MonoBehaviour
     /// <returns>座標</returns>
     Vector3 CalcPositionFromForce(float time, Vector3 startPosition)
     {
-        float mass = 1f;
         Vector3 force = playerMove.angle * playerMove.throwPower;
-        Vector3 gravity = new Vector2(0f, -9.8f);
+
+        float t = force.y / -9.8f;   // 最高点の時間
 
         Vector3 speed = (force / mass) * Time.fixedDeltaTime;
         Vector3 position = (speed * time) + (gravity * 0.5f * Mathf.Pow(time, 2));
+
+        if (-time <= t * 10) position = (speed * time) + (new Vector3(1.0f, -5.0f) * 0.5f * Mathf.Pow(time, 2));
 
         return startPosition + position;
     }
@@ -141,7 +147,7 @@ public class ThrowArc : MonoBehaviour
         }
     }
 
-    /*
+    
     /// <summary>
     /// 2点間の線分で衝突判定し、衝突する時間を返す
     /// </summary>
@@ -149,12 +155,13 @@ public class ThrowArc : MonoBehaviour
     private float GetArcHitTime(float startTime, float endTime)
     {
         // Linecastする線分の始終点の座標
-        Vector3 startPosition = CalcPositionFromForce(startTime);
-        Vector3 endPosition = GetArcPositionAtTime(endTime);
+        Vector3 startPosition = this.startPosition;
+        Vector3 endPosition = this.endPosition;
 
         // 衝突判定
-        RaycastHit hitInfo;
-        if (Physics.Linecast(startPosition, endPosition, out hitInfo))
+        RaycastHit2D hitInfo = Physics2D.Linecast(startPosition, endPosition,floor);
+
+        if (hitInfo)
         {
             // 衝突したColliderまでの距離から実際の衝突時間を算出
             float distance = Vector3.Distance(startPosition, endPosition);
@@ -162,6 +169,6 @@ public class ThrowArc : MonoBehaviour
         }
         return float.MaxValue;
     }
-    */
+    
 
 }

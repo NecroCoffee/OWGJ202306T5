@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 /// <summary>
-/// プレイヤーの操作(プレイヤーにアタッチ)
+/// プレイヤーの操作
 /// 聖山由梨
 /// </summary>
 public class PlayerMove : MonoBehaviour
@@ -31,7 +31,7 @@ public class PlayerMove : MonoBehaviour
     public Rigidbody2D savePointRd { get; private set; }                // 生成したセーブポイントのRigidBody
     // 角度
     public bool nowThrow { get; private set; } = false;      // 投げようとしているか
-    Vector3 startPosition;              // 投げ始める位置
+    public Vector3 startPosition;              // 投げ始める位置
     private Vector3 mousePosition;      // マウスの座標
     private Vector3 worldTarget;        // マウスのワールド座標
     // 発射
@@ -136,7 +136,7 @@ public class PlayerMove : MonoBehaviour
         savePointRd.AddForce(angle * throwPower);
 
         // 最高到達点に達するまでの時間
-        t = angle.y / gravity;
+        t = angle.y * throwPower / gravity;
 
         // 最高点の高さ
         high = angle.y * t - 0.5f * gravity * Mathf.Pow(t, 2);
