@@ -4,6 +4,12 @@ using UnityEngine;
 
 public class Player_test : MonoBehaviour
 {
+    /// <summary>
+    /// テスト用プレイヤー操作スクリプト
+    /// 先輩がオブジェクトを持ってきてくれたら使用しない
+    /// 
+    /// S2G215
+    /// </summary>
     //GameObject player_Prefab;
     //[Header("ここにGameManagerオブジェクトを入れる")]
     //public GameObject gameManagerObject;//GameManager保存用

@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class CameraManager : MonoBehaviour
 {
+    /// <summary>
+    /// ƒƒCƒ“ƒJƒƒ‰‚É“\‚è•t‚¯‚é
+    /// 
+    /// S2G215
+    /// </summary>
     [SerializeField]private GameObject m_cameraTarget;
     private Vector2 m_Pos;
     private Vector3 m_cameraPos;

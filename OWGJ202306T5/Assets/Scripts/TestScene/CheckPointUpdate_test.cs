@@ -4,6 +4,14 @@ using UnityEngine;
 
 public class CheckPointUpdate_test : MonoBehaviour
 {
+    /// <summary>
+    /// Q なにこれ?
+    /// A チェックポイントの座標更新用スクリプト
+    /// チェックポイントにアタッチしてPlayerタグが付いたオブジェクトとの接触を感知したらGameManagerのチェックポイント保存変数を更新する
+    /// 多分増やしても大丈夫そう 
+    ///
+    /// S2G215
+    /// </summary>
     private GameObject m_gameManagerObject;
     [SerializeField]private Vector2 m_thisObjectPos;
 
@@ -21,7 +29,7 @@ public class CheckPointUpdate_test : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             m_gameManagerScript.currentCheckPointPos = m_thisObjectPos;
-            m_gameManagerScript.Is_saveObjectActive = true;
+            m_gameManagerScript.Is_checkPointIsActive = true;
             Debug.Log("CheckPointActive!{Pos.x="+m_thisObjectPos.x+":Pos.y="+m_thisObjectPos.y+"}");
         }
     }

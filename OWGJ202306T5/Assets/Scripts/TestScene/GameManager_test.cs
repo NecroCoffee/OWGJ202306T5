@@ -3,9 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class GameManager_test : MonoBehaviour
 {
+    /// <summary>
+    /// Q なにこれ?
+    /// A ゲームの進行に関する処理とか変数をまとめてあるスクリプト
+    /// 基本的にフラグとかシーン管理、UI周りはこれで処理する。
+    /// 
+    /// S2G215
+    /// </summary>
     [Header("オブジェクト用変数")]
     [SerializeField] private GameObject life_TextObject;//lifetextオブジェクト保存用
     private TextMeshProUGUI life_Text;
@@ -21,6 +29,7 @@ public class GameManager_test : MonoBehaviour
 
     private Vector2 startPointPos;//スタート時プレイヤー生成位置
 
+    public bool Is_Goal=false;//ゴール判定
 
 
     [SerializeField] private float m_resetPlayerPos_y = 0.25f;//リセット時埋まり込み防止用
@@ -40,6 +49,10 @@ public class GameManager_test : MonoBehaviour
 
     private void Player_Action_Reset()//リセット処理
     {
+
+        player_Life -= 1;
+        life_Text.text = player_Life.ToString();
+
         if (Is_saveObjectActive == true)
         {
             GameObject.FindWithTag("Player").transform.position = new Vector3(save_tmp.x, save_tmp.y + m_resetPlayerPos_y);
@@ -86,9 +99,17 @@ public class GameManager_test : MonoBehaviour
         }
     }
 
+    private void GoalProcess()
+    {
+        if (Is_Goal == true)
+        {
+            //ここにゴールしたあとの処理を書く
+        }
+    }
+
     private void Awake()
     {
-        
+        Is_Goal = false;
         Is_canSaveObjectGenerate = true;
         startPointPos = GameObject.FindWithTag("StartPoint").transform.position;//スタート位置取得
 

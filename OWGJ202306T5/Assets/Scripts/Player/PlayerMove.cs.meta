@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 8ee3ab059b4d4a94b902b02d9137632e
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - player: {fileID: 785382212352430293, guid: df02d1ac9c6b75a47a1a71e6f431e28f, type: 3}
+  - throwArc: {fileID: 785382212352430317, guid: df02d1ac9c6b75a47a1a71e6f431e28f, type: 3}
+  - savePoint: {fileID: 3480692179420655087, guid: f89f715ef93edfc4eb97d04a0ada0252, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
