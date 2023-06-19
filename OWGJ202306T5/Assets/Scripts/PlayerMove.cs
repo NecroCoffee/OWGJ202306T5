@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
+using UnityEditor.Animations;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -41,6 +42,7 @@ public class PlayerMove : MonoBehaviour
     public float t { get; private set; }    // 最高点に達するまでの時間
     public float high { get; private set; }    // 最高点の高さ
 
+    Animator animator;
 
     void Start()
     {
@@ -51,6 +53,8 @@ public class PlayerMove : MonoBehaviour
         playerRb = player.GetComponent<Rigidbody2D>();
 
         startPosition = savePoint.transform.position;
+
+        animator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -58,12 +62,20 @@ public class PlayerMove : MonoBehaviour
     {
         // 左右移動
         xPos = Input.GetAxisRaw("Horizontal");
+        Debug.Log(xPos);
         transform.Translate(new Vector3(xPos, 0) * amoMove * Time.deltaTime);
+        // 画像反転
+        if (xPos > 0 && gameObject.GetComponent<SpriteRenderer>().flipX) gameObject.GetComponent<SpriteRenderer>().flipX = false;
+        if (xPos < 0 && !gameObject.GetComponent<SpriteRenderer>().flipX) gameObject.GetComponent<SpriteRenderer>().flipX = true;
+        // Trigger
+        if (xPos == 0) animator.SetBool("run", false);
+        else animator.SetBool("run", true);
 
         // ジャンプ
         if (!jump && Input.GetKeyDown(KeyCode.Space))
         {
             jump = true;
+            animator.SetTrigger("jump");
             playerRb.AddForce(transform.up * jumpForce);
         }
         if (jump) playerRb.AddForce(new Vector3(0, gravity, 0), (ForceMode2D)ForceMode.Force);
