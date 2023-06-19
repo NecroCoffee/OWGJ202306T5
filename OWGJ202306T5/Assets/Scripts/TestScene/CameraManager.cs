@@ -9,6 +9,8 @@ public class CameraManager : MonoBehaviour
     private Vector3 m_cameraPos;
 
     private bool Is_findCameraTarget=false;
+
+    [SerializeField] GameManager_test gameManager;
     
 
     private void Awake()
@@ -20,7 +22,7 @@ public class CameraManager : MonoBehaviour
     private void Start()
     {
         m_Pos = Camera.main.transform.position;
-        
+        m_cameraTarget = gameManager.player;
     }
 
     private void Update()

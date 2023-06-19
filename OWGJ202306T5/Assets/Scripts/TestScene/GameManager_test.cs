@@ -10,12 +10,15 @@ public class GameManager_test : MonoBehaviour
     [SerializeField] private GameObject life_TextObject;//lifetextオブジェクト保存用
     private TextMeshProUGUI life_Text;
     [SerializeField] private GameObject player_Prefab;
-    [SerializeField] private GameObject save_Prefab;
+    private GameObject save_Prefab;
+
+    [SerializeField] PlayerMove playerMove;
+    [SerializeField] SavePointStop savePointStop;
 
     [Header("管理用変数")]
     public int player_Life = 15;//プレイヤー残機
 
-    [SerializeField]private Vector2 save_tmp;//セーブオブジェクト座標保存用
+    public Vector3 save_tmp;//セーブオブジェクト座標保存用
 
     public bool Is_saveObjectActive = false;//セーブジェクトは有効かどうか
 
@@ -31,10 +34,12 @@ public class GameManager_test : MonoBehaviour
 
     public bool Is_canSaveObjectGenerate;//セーブオブジェクト生成可否判定
 
+    public GameObject player { get; private set; }
+
 
     private void Player_Generate_Start()//開始時プレイヤー生成
     {
-        Instantiate(player_Prefab, startPointPos, Quaternion.identity);
+        player = Instantiate(player_Prefab, startPointPos, Quaternion.identity);
         
     }
 
@@ -42,9 +47,14 @@ public class GameManager_test : MonoBehaviour
     {
         if (Is_saveObjectActive == true)
         {
+            Debug.Log(save_tmp);
+            //save_tmp = savePointStop.savePosition;
             GameObject.FindWithTag("Player").transform.position = new Vector3(save_tmp.x, save_tmp.y + m_resetPlayerPos_y);
             Is_canSaveObjectGenerate = true;
             Is_saveObjectActive = false;
+            save_Prefab = playerMove.savePointObj;
+            player_Life--;
+            life_Text.text = player_Life.ToString();
             Destroy(save_Prefab);
         }
         else if (Is_saveObjectActive == false & Is_checkPointIsActive == true)
@@ -109,7 +119,7 @@ public class GameManager_test : MonoBehaviour
     private void Update()
     {
 
-        Find_Pos_CurrentSaveObject();
+        //Find_Pos_CurrentSaveObject();
         //Debug.Log("curSavePos.x" + save_tmp.x);
         //Debug.Log("curSavePos.y" + save_tmp.y);
         

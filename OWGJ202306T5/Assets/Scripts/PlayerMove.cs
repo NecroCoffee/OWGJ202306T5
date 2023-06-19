@@ -11,6 +11,8 @@ using UnityEngine.UIElements;
 /// </summary>
 public class PlayerMove : MonoBehaviour
 {
+    [SerializeField] GameManager_test gameManager;
+
     // 移動
     [SerializeField] GameObject player;        // プレイヤーのオブジェクト
     private Vector3 playerPos;                 // プレイヤーの位置
@@ -28,10 +30,9 @@ public class PlayerMove : MonoBehaviour
     // セーブポイント
     [SerializeField] GameObject savePoint;                  // セーブポイントのプレハブ
     private const string saveTag = "SaveObject";            // セーブポイントのタグ
-    private GameObject savePointObj;                        // 生成したセーブポイント
+    public GameObject savePointObj { get; private set; }    // 生成したセーブポイント
     public Rigidbody2D savePointRd { get; private set; }    // 生成したセーブポイントのRigidBody
-    public bool onlySave { get; private set; } = false;     // 作成されているセーブポイントが一つか
-    private GameObject beforeSave = null;                          // 前に作成したセーブポイント
+    private GameObject beforeSave = null;                   // 前に作成したセーブポイント
     // 角度
     public bool nowThrow { get; private set; } = false;  // 投げようとしているか
     public Vector3 startPosition;                        // 投げ始める位置
@@ -90,6 +91,7 @@ public class PlayerMove : MonoBehaviour
         if (Input.GetMouseButton(0)) throwPower += Time.deltaTime + 1.0f;
         if (Input.GetMouseButtonUp(0)) SaveThrow();
         //if (throwing) Throwing();
+        
     }
 
     
@@ -131,6 +133,7 @@ public class PlayerMove : MonoBehaviour
         startPosition = GameObject.FindWithTag(saveTag).transform.position;
         savePointObj = Instantiate(savePoint, startPosition, Quaternion.identity);
         savePointRd = savePointObj.GetComponent<Rigidbody2D>();
+        gameManager.Is_saveObjectActive = true;
 
         // 投げる方向を決定
         angle = (worldTarget - playerPos).normalized;
@@ -153,16 +156,14 @@ public class PlayerMove : MonoBehaviour
         // 現在のセーブポイントを記録する
         beforeSave = savePointObj;
 
-
+        // セーブポイントが動くようにする
         savePointRd.bodyType = RigidbodyType2D.Dynamic;
 
         // 投げる
         savePointRd.AddForce(angle * throwPower);
 
-        // 最高到達点に達するまでの時間
+        // 最高点の計算
         t = angle.y * throwPower / gravity;
-
-        // 最高点の高さ
         high = angle.y * t - 0.5f * gravity * Mathf.Pow(t, 2);
 
         nowThrow = false;
