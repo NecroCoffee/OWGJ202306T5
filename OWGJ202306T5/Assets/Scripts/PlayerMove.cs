@@ -11,6 +11,9 @@ using UnityEngine.UIElements;
 /// </summary>
 public class PlayerMove : MonoBehaviour
 {
+    [SerializeField] private GameObject m_gameManagerObject;
+    private GameManager_test m_gameManagerScript;
+
     // 移動
     [SerializeField] GameObject player;        // プレイヤーのオブジェクト
     private Vector3 playerPos;                 // プレイヤーの位置
@@ -46,6 +49,11 @@ public class PlayerMove : MonoBehaviour
 
     void Start()
     {
+        m_gameManagerObject = GameObject.FindWithTag("GameManager");
+        m_gameManagerScript = m_gameManagerObject.GetComponent<GameManager_test>();
+
+
+
         // プレイヤーの位置を取得
         playerPos = player.transform.position;
 
@@ -83,10 +91,19 @@ public class PlayerMove : MonoBehaviour
         // 投げる方向を決める
         if (!nowThrow) mousePosition = Input.mousePosition;
 
-        // 投げる
-        if (Input.GetMouseButtonDown(0)) ThrowPoint();
-        if (Input.GetMouseButton(0)) throwPower += Time.deltaTime + 1.0f;
-        if (Input.GetMouseButtonUp(0)) SaveThrow();
+
+        if (m_gameManagerScript.Is_canSaveObjectGenerate == true)
+        {
+            // 投げる
+            if (Input.GetMouseButtonDown(0)) ThrowPoint();
+            if (Input.GetMouseButton(0)) throwPower += Time.deltaTime + 1.0f;
+            if (Input.GetMouseButtonUp(0))
+            {
+                m_gameManagerScript.Is_saveObjectActive = true;
+                m_gameManagerScript.Is_canSaveObjectGenerate = false;
+                SaveThrow();
+            }
+        }
         //if (throwing) Throwing();
     }
 
