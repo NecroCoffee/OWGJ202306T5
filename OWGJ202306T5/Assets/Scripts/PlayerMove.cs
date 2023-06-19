@@ -19,7 +19,7 @@ public class PlayerMove : MonoBehaviour
 
     // ジャンプ
     private Rigidbody2D playerRb;          // プレイヤーの当たり判定
-    private float jumpForce = 350f;        // ジャンプ力
+    private float jumpForce = 500f;        // ジャンプ力
     private bool jump = false;             // ジャンプ中かどうか
 
     // 投げる
@@ -41,8 +41,6 @@ public class PlayerMove : MonoBehaviour
     public float t { get; private set; }    // 最高点に達するまでの時間
     public float high { get; private set; }    // 最高点の高さ
 
-    //test
-
 
     void Start()
     {
@@ -53,7 +51,6 @@ public class PlayerMove : MonoBehaviour
         playerRb = player.GetComponent<Rigidbody2D>();
 
         startPosition = savePoint.transform.position;
-
     }
 
     // Update is called once per frame
