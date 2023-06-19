@@ -26,22 +26,25 @@ public class PlayerMove : MonoBehaviour
     // 投げる
     [SerializeField] ThrowArc throwArc;
     // セーブポイント
-    [SerializeField] GameObject savePoint;          // セーブポイントのプレハブ
-    private const string saveTag = "SaveObject";    // セーブポイントのタグ
-    private GameObject savePointObj;                // 生成したセーブポイント
-    public Rigidbody2D savePointRd { get; private set; }                // 生成したセーブポイントのRigidBody
+    [SerializeField] GameObject savePoint;                  // セーブポイントのプレハブ
+    private const string saveTag = "SaveObject";            // セーブポイントのタグ
+    private GameObject savePointObj;                        // 生成したセーブポイント
+    public Rigidbody2D savePointRd { get; private set; }    // 生成したセーブポイントのRigidBody
+    public bool onlySave { get; private set; } = false;     // 作成されているセーブポイントが一つか
+    private GameObject beforeSave = null;                          // 前に作成したセーブポイント
     // 角度
-    public bool nowThrow { get; private set; } = false;      // 投げようとしているか
-    public Vector3 startPosition;              // 投げ始める位置
-    private Vector3 mousePosition;      // マウスの座標
-    private Vector3 worldTarget;        // マウスのワールド座標
+    public bool nowThrow { get; private set; } = false;  // 投げようとしているか
+    public Vector3 startPosition;                        // 投げ始める位置
+    private Vector3 mousePosition;                       // マウスの座標
+    private Vector3 worldTarget;                         // マウスのワールド座標
     // 発射
-    private bool throwing = false; // 投げているか
-    public float throwPower { get; private set; } = 1.0f;    // 投げる強さ
-    public Vector3 angle { get; private set; } // 投げる方向
-    public float t { get; private set; }    // 最高点に達するまでの時間
-    public float high { get; private set; }    // 最高点の高さ
+    private bool throwing = false;                          // 投げているか
+    public float throwPower { get; private set; } = 1.0f;   // 投げる強さ
+    public Vector3 angle { get; private set; }              // 投げる方向
+    public float t { get; private set; }                    // 最高点に達するまでの時間
+    public float high { get; private set; }                 // 最高点の高さ
 
+    // アニメーション
     Animator animator;
 
     void Start()
@@ -62,7 +65,6 @@ public class PlayerMove : MonoBehaviour
     {
         // 左右移動
         xPos = Input.GetAxisRaw("Horizontal");
-        Debug.Log(xPos);
         transform.Translate(new Vector3(xPos, 0) * amoMove * Time.deltaTime);
         // 画像反転
         if (xPos > 0 && gameObject.GetComponent<SpriteRenderer>().flipX) gameObject.GetComponent<SpriteRenderer>().flipX = false;
@@ -111,6 +113,9 @@ public class PlayerMove : MonoBehaviour
     /// </summary>
     private void ThrowPoint()
     {
+        // アニメーション
+        animator.SetBool("beforeThrow", true);
+
         // 投げる強さをリセット
         throwPower = 0;
 
@@ -139,6 +144,16 @@ public class PlayerMove : MonoBehaviour
     /// </summary>
     private void SaveThrow()
     {
+        animator.SetBool("beforeThrow", false);
+        animator.SetTrigger("throwing");
+
+        // 前のセーブポイントを破棄する
+        if (beforeSave != null) Destroy(beforeSave);
+
+        // 現在のセーブポイントを記録する
+        beforeSave = savePointObj;
+
+
         savePointRd.bodyType = RigidbodyType2D.Dynamic;
 
         // 投げる
