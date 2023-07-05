@@ -11,8 +11,11 @@ using UnityEngine.UIElements;
 /// </summary>
 public class PlayerMove : MonoBehaviour
 {
-    [SerializeField] GameManager_test gameManager;
+    [Header("確認用(触らないこと)")]
+    [SerializeField] GameObject gamemanagerObj;
+    [SerializeField]GameManager_test gameManager;
 
+    [Header("触っていいところ")]
     // 移動
     [SerializeField] GameObject player;        // プレイヤーのオブジェクト
     private Vector3 playerPos;                 // プレイヤーの位置
@@ -29,7 +32,7 @@ public class PlayerMove : MonoBehaviour
     [SerializeField] ThrowArc throwArc;
     // セーブポイント
     [SerializeField] GameObject savePoint;                  // セーブポイントのプレハブ
-    private const string saveTag = "SaveObject";            // セーブポイントのタグ
+    private const string saveTag = "ShootPosition";            // セーブポイントのタグ
     public GameObject savePointObj { get; private set; }    // 生成したセーブポイント
     public Rigidbody2D savePointRd { get; private set; }    // 生成したセーブポイントのRigidBody
     private GameObject beforeSave = null;                   // 前に作成したセーブポイント
@@ -59,6 +62,12 @@ public class PlayerMove : MonoBehaviour
         startPosition = savePoint.transform.position;
 
         animator = GetComponent<Animator>();
+
+        //gamemanagerオブジェクト取得
+        gamemanagerObj = GameObject.FindWithTag("GameManager");
+
+        //gamemanagerスクリプトを取得
+        gameManager = gamemanagerObj.GetComponent<GameManager_test>();
     }
 
     // Update is called once per frame
@@ -100,6 +109,9 @@ public class PlayerMove : MonoBehaviour
         if (throwing && savePointRd.transform.position.y >= high) GravityUp();
     }
     
+    ///<summary>
+    /// 
+    ///</summary>
 
     /// <summary>
     /// 床についてるときのみジャンプ可にする

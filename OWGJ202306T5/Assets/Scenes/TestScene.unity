@@ -169,10 +169,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   life_TextObject: {fileID: 822285605}
-  player_Prefab: {fileID: 5134692214400608477, guid: 4f36cb702b8cc3843a70270d5be0f1b4, type: 3}
-  save_Prefab: {fileID: 0}
+  player_Prefab: {fileID: 5797991416612470406, guid: be81aac28d617bb42ac6a771da3dc1a0, type: 3}
+  playerMove: {fileID: 0}
+  savePointStop: {fileID: 0}
   player_Life: 15
-  save_tmp: {x: 0, y: 0}
+  save_tmp: {x: 0, y: 0, z: 0}
   Is_saveObjectActive: 1
   m_resetPlayerPos_y: 0.25
   Is_checkPointIsActive: 0
@@ -185,12 +186,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 120653647}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 846fd44b508ac9048b10871f6e1c17d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  saveObject: {fileID: 3480692179420655087, guid: 758961a3ad7b28f42a16b9badbf4e4c5, type: 3}
+  saveObject: {fileID: 457589282214966364, guid: 9bae47b763fa5b84a98e8e4138cd2809, type: 3}
   m_gameManagerObject: {fileID: 0}
 --- !u!1 &237707917
 GameObject:
@@ -325,63 +326,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 7
---- !u!1001 &322490881
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 5134692214400608474, guid: 4f36cb702b8cc3843a70270d5be0f1b4, type: 3}
-      propertyPath: m_RootOrder
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 5134692214400608474, guid: 4f36cb702b8cc3843a70270d5be0f1b4, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5134692214400608474, guid: 4f36cb702b8cc3843a70270d5be0f1b4, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5134692214400608474, guid: 4f36cb702b8cc3843a70270d5be0f1b4, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5134692214400608474, guid: 4f36cb702b8cc3843a70270d5be0f1b4, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5134692214400608474, guid: 4f36cb702b8cc3843a70270d5be0f1b4, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5134692214400608474, guid: 4f36cb702b8cc3843a70270d5be0f1b4, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5134692214400608474, guid: 4f36cb702b8cc3843a70270d5be0f1b4, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5134692214400608474, guid: 4f36cb702b8cc3843a70270d5be0f1b4, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5134692214400608474, guid: 4f36cb702b8cc3843a70270d5be0f1b4, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5134692214400608474, guid: 4f36cb702b8cc3843a70270d5be0f1b4, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5134692214400608477, guid: 4f36cb702b8cc3843a70270d5be0f1b4, type: 3}
-      propertyPath: m_Name
-      value: Test_Player
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 4f36cb702b8cc3843a70270d5be0f1b4, type: 3}
 --- !u!1 &582045685
 GameObject:
   m_ObjectHideFlags: 0
@@ -1167,6 +1111,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_cameraTarget: {fileID: 0}
+  gameManager: {fileID: 120653649}
 --- !u!1 &1614512165
 GameObject:
   m_ObjectHideFlags: 0

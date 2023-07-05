@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CheckPointUpdate_test : MonoBehaviour
+public class GoalCheck : MonoBehaviour
 {
     private GameObject m_gameManagerObject;
-    [SerializeField]private Vector2 m_thisObjectPos;
+    [SerializeField] private Vector2 m_thisObjectPos;
 
     private GameManager_test m_gameManagerScript;
 
@@ -20,10 +20,7 @@ public class CheckPointUpdate_test : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            m_gameManagerScript.Is_checkPointIsActive = true;
-            m_gameManagerScript.currentCheckPointPos = m_thisObjectPos;
-            //m_gameManagerScript.Is_saveObjectActive = true;
-            Debug.Log("CheckPointActive!{Pos.x="+m_thisObjectPos.x+":Pos.y="+m_thisObjectPos.y+"}");
+            m_gameManagerScript.Is_goal = true;
         }
     }
 }

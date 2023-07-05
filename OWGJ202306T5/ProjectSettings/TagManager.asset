@@ -7,10 +7,9 @@ TagManager:
   - SaveObject
   - Stage
   - StartPoint
-  - Player1
-  - Player2
   - CheckPoint
   - GameManager
+  - ShootPosition
   layers:
   - Default
   - TransparentFX

@@ -2,6 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+/// <summary>
+/// テスト用にマウス座標にセーブポイントが出るようにしたもの
+/// 使うな
+/// </summary>
 public class t_GenerateSaveObj : MonoBehaviour
 {
     Vector2 mousePos;

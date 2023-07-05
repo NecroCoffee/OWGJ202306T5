@@ -34,7 +34,9 @@ public class GameManager_test : MonoBehaviour
 
     public bool Is_canSaveObjectGenerate;//セーブオブジェクト生成可否判定
 
-    public GameObject player { get; private set; }
+    public bool Is_goal = false;//ゴール判定
+
+    public GameObject player { get; private set; };
 
 
     private void Player_Generate_Start()//開始時プレイヤー生成
@@ -57,11 +59,11 @@ public class GameManager_test : MonoBehaviour
             life_Text.text = player_Life.ToString();
             Destroy(save_Prefab);
         }
-        else if (Is_saveObjectActive == false & Is_checkPointIsActive == true)
+        else if (Is_saveObjectActive == false && Is_checkPointIsActive == true)
         {
             GameObject.FindWithTag("Player").transform.position = new Vector3(currentCheckPointPos.x, currentCheckPointPos.y + m_resetPlayerPos_y);
         }
-        else if (Is_saveObjectActive == false & Is_checkPointIsActive == false)
+        else if (Is_saveObjectActive == false && Is_checkPointIsActive == false)
         {
             GameObject.FindWithTag("Player").transform.position = new Vector3(startPointPos.x, startPointPos.y + m_resetPlayerPos_y);
         }
@@ -114,15 +116,19 @@ public class GameManager_test : MonoBehaviour
     }
     
 
-
-
     private void Update()
     {
 
         //Find_Pos_CurrentSaveObject();
         //Debug.Log("curSavePos.x" + save_tmp.x);
         //Debug.Log("curSavePos.y" + save_tmp.y);
-        
+
+        if (Is_goal == true)//ここにゴール時の処理を入れる
+        {
+            Debug.Log("Goal!!");
+        }
+
+        Find_Pos_CurrentSaveObject();
         
         if (Input.GetMouseButtonDown(1))
         {
